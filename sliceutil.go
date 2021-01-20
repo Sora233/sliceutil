@@ -11,8 +11,8 @@ func Compare(s1, s2 interface{}) bool {
 	}
 
 	// Convert slices to correct type
-	slice1 := convertSliceToInterface(s1)
-	slice2 := convertSliceToInterface(s2)
+	slice1 := convertIterableToInterface(s1)
+	slice2 := convertIterableToInterface(s2)
 	if slice1 == nil || slice2 == nil {
 		return false
 	}
@@ -53,8 +53,8 @@ func OrderedCompare(s1, s2 interface{}) bool {
 	}
 
 	// Convert slices to correct type
-	slice1 := convertSliceToInterface(s1)
-	slice2 := convertSliceToInterface(s2)
+	slice1 := convertIterableToInterface(s1)
+	slice2 := convertIterableToInterface(s2)
 
 	//If both are nil, they are equal
 	if slice1 == nil || slice2 == nil {
@@ -79,7 +79,7 @@ func OrderedCompare(s1, s2 interface{}) bool {
 
 // Contains checks if a slice contains an element
 func Contains(s interface{}, e interface{}) bool {
-	slice := convertSliceToInterface(s)
+	slice := convertIterableToInterface(s)
 
 	for _, a := range slice {
 		if a == e {
@@ -89,11 +89,11 @@ func Contains(s interface{}, e interface{}) bool {
 	return false
 }
 
-// convertSliceToInterface takes a slice passed in as an interface{}
-// then converts the slice to a slice of interfaces
-func convertSliceToInterface(s interface{}) (slice []interface{}) {
+// convertIterableToInterface takes a slice/array/string passed in as an interface{}
+// then converts the object to a slice of interfaces
+func convertIterableToInterface(s interface{}) (slice []interface{}) {
 	v := reflect.ValueOf(s)
-	if v.Kind() != reflect.Slice {
+	if v.Kind() != reflect.Slice || v.Kind() != reflect.Array || v.Kind() != reflect.String {
 		return nil
 	}
 
