@@ -1,6 +1,8 @@
 package sliceutil
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestContains(t *testing.T) {
 	// create a test struct
@@ -34,6 +36,15 @@ func TestContains(t *testing.T) {
 		if actual != test.result {
 			t.Errorf("(%q,%q) = %v; want %v", test.s, test.e, actual, test.result)
 		}
+	}
+
+	testarray := [...]string{"a", "b", "c"}
+	if !Contains(testarray, "a") {
+		t.Errorf("failed")
+	}
+
+	if !Contains("abc", 'a') {
+		t.Errorf("failed")
 	}
 
 }

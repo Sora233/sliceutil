@@ -1,6 +1,8 @@
 package sliceutil
 
-import "reflect"
+import (
+	"reflect"
+)
 
 // Compare will check if two slices are equal
 // even if they aren't in the same order
@@ -93,15 +95,20 @@ func Contains(s interface{}, e interface{}) bool {
 // then converts the object to a slice of interfaces
 func convertIterableToInterface(s interface{}) (slice []interface{}) {
 	v := reflect.ValueOf(s)
-	if v.Kind() != reflect.Slice || v.Kind() != reflect.Array || v.Kind() != reflect.String {
-		return nil
-	}
 
-	length := v.Len()
-	slice = make([]interface{}, length)
-	for i := 0; i < length; i++ {
-		slice[i] = v.Index(i).Interface()
+	switch v.Kind() {
+	case reflect.Slice, reflect.Array:
+		length := v.Len()
+		slice = make([]interface{}, length)
+		for i := 0; i < length; i++ {
+			slice[i] = v.Index(i).Interface()
+		}
+	case reflect.String:
+		length := v.Len()
+		slice = make([]interface{}, length)
+		for _, r := range v.String() {
+			slice = append(slice, r)
+		}
 	}
-
-	return slice
+	return
 }
