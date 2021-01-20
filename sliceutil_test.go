@@ -27,6 +27,8 @@ func TestContains(t *testing.T) {
 		{[]bool{true}, true, true},
 		{[]bool{false}, true, false},
 		{[]bool{false}, true, false},
+		{[...]string{"a", "b", "c"}, "a", true},
+		{"abcdef", 'e', true},
 		{[]testStruct{testStruct{"one"}, testStruct{"two"}}, testStruct{"one"}, true},
 		{[]*testStruct{&testStruct{"one"}, testStructPointer}, testStructPointer, true},
 	}
@@ -37,16 +39,6 @@ func TestContains(t *testing.T) {
 			t.Errorf("(%q,%q) = %v; want %v", test.s, test.e, actual, test.result)
 		}
 	}
-
-	testarray := [...]string{"a", "b", "c"}
-	if !Contains(testarray, "a") {
-		t.Errorf("failed")
-	}
-
-	if !Contains("abc", 'a') {
-		t.Errorf("failed")
-	}
-
 }
 
 func TestCompare(t *testing.T) {
